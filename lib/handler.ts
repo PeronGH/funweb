@@ -1,4 +1,4 @@
-import { Handler, Middleware } from "./types.ts";
+import type { Handler, Middleware } from "./types.ts";
 
 /**
  * Create a handler from a handler and a list of middlewares.
