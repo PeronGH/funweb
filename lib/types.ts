@@ -1,10 +1,13 @@
 export type MaybePromise<T> = T | Promise<T>;
 
-export type Handler = (req: Request) => MaybePromise<Response>;
+export interface Handler {
+  (req: Request): MaybePromise<Response>;
+}
 
-export type Middleware = (
-  req: Request,
-  next: Handler,
-) => MaybePromise<Response>;
+export interface Middleware {
+  (req: Request, next: Handler): MaybePromise<Response>;
+}
 
-export type MiddlewareWrapper = (middleware: Middleware) => Middleware;
+export interface MiddlewareWrapper {
+  (middleware: Middleware): Middleware;
+}
