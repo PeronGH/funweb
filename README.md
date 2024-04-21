@@ -5,17 +5,17 @@ Functional Web Backend Framework
 ## Example
 
 ```typescript
-import { get, methods, post, route, routes } from "jsr:@pixel/funweb";
+import { get, post, route, routes, verbs } from "jsr:@pixel/funweb";
 
 const handler = routes(
   route(
     "/api",
-    methods(
+    verbs(
       get(() => new Response("Hello World!")),
       post((req) => new Response(req.body)),
     ),
   ),
-  route("/hi", methods(get(() => new Response("Hi!")))),
+  route("/hi", verbs(get(() => new Response("Hi!")))),
 );
 
 Deno.serve(handler);

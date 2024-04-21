@@ -20,26 +20,26 @@ export function whenMethod(
  * Creates a middleware that matches the request path against the given method (case insensitive).
  * If there's a match, the provided handler is invoked; otherwise, it falls through.
  */
-export function method(method: string, handler: Handler): Middleware {
+export function verb(method: string, handler: Handler): Middleware {
   return whenMethod(method, (req) => handler(req));
 }
 
-function createMethodMiddleware(m: string) {
-  return (handler: Handler) => method(m, handler);
+function createVerbMiddleware(m: string) {
+  return (handler: Handler) => verb(m, handler);
 }
 
-export const get: ConditionalHandler = createMethodMiddleware("GET");
-export const post: ConditionalHandler = createMethodMiddleware("POST");
-export const put: ConditionalHandler = createMethodMiddleware("PUT");
-export const del: ConditionalHandler = createMethodMiddleware("DELETE");
-export const patch: ConditionalHandler = createMethodMiddleware("PATCH");
-export const options: ConditionalHandler = createMethodMiddleware("OPTIONS");
+export const get: ConditionalHandler = createVerbMiddleware("GET");
+export const post: ConditionalHandler = createVerbMiddleware("POST");
+export const put: ConditionalHandler = createVerbMiddleware("PUT");
+export const del: ConditionalHandler = createVerbMiddleware("DELETE");
+export const patch: ConditionalHandler = createVerbMiddleware("PATCH");
+export const options: ConditionalHandler = createVerbMiddleware("OPTIONS");
 
 /**
  * Creates a handler that invokes the provided middlewares in the FILO order.
  * If none of the middlewares handle the request, a "Method Not Allowed" response is sent.
  */
-export function methods(
+export function verbs(
   ...middlewares: Middleware[]
 ): Handler {
   return match(methodNotAllowed, ...middlewares);

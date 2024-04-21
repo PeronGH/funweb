@@ -1,14 +1,14 @@
-import { get, methods, post, route, routes } from "./mod.ts";
+import { get, post, route, routes, verbs } from "./mod.ts";
 
 const handler = routes(
   route(
     "/api",
-    methods(
+    verbs(
       get(() => new Response("Hello World!")),
       post((req) => new Response(req.body)),
     ),
   ),
-  route("/hi", methods(get(() => new Response("Hi!")))),
+  route("/hi", verbs(get(() => new Response("Hi!")))),
 );
 
 Deno.serve(handler);
