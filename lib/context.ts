@@ -8,12 +8,15 @@ export function setCtx(req: Request, ctx: Context) {
   contexts.set(req, ctx);
 }
 
-export function getCtx(req: Request): Context {
+// deno-lint-ignore no-explicit-any
+export function getCtx<T extends Record<string, any> = object>(
+  req: Request,
+): Context<T> {
   req = WrappedRequest.unwrap(req);
   let ctx = contexts.get(req);
   if (!ctx) {
     ctx = {};
     contexts.set(req, ctx);
   }
-  return ctx;
+  return { ...ctx } as Context<T>;
 }

@@ -13,4 +13,7 @@ export interface ConditionalHandler {
 }
 
 // deno-lint-ignore no-explicit-any
-export type Context = Record<string, any>;
+export type Context<T extends Record<string, any> = object> =
+  // deno-lint-ignore no-explicit-any
+  & Record<string, any>
+  & T;
