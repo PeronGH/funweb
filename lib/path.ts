@@ -8,7 +8,7 @@ const globMap = new Map<string, RegExp>();
 function getGlobRegex(glob: string): RegExp {
   let globRegex = globMap.get(glob);
   if (!globRegex) {
-    globRegex = globToRegExp(glob);
+    globRegex = globToRegExp(glob, { extended: true });
     globMap.set(glob, globRegex);
   }
   return globRegex;
