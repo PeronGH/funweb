@@ -22,5 +22,4 @@ const handler = routes(
 );
 
 Deno.serve(handler);
-
 ```
