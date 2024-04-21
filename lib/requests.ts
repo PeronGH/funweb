@@ -6,7 +6,7 @@ export abstract class WrappedRequest extends Request {
     this.#raw = req;
   }
 
-  get raw() {
+  get raw(): Request {
     return WrappedRequest.unwrap(this.#raw);
   }
 
