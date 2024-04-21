@@ -1,18 +1,11 @@
 export abstract class WrappedRequest extends Request {
-  #raw: Request;
-
-  constructor(req: Request) {
-    super(req);
-    this.#raw = req;
-  }
-
-  get raw(): Request {
-    return WrappedRequest.unwrap(this.#raw);
+  constructor(readonly raw: Request) {
+    super(raw);
   }
 
   static unwrap(req: Request): Request {
     if (req instanceof WrappedRequest) {
-      return WrappedRequest.unwrap(req.#raw);
+      return WrappedRequest.unwrap(req.raw);
     }
     return req;
   }
