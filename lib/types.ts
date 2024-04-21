@@ -1,3 +1,5 @@
+import type { ErroredRequest } from "./requests.ts";
+
 export type MaybePromise<T> = T | Promise<T>;
 
 export interface Handler {
@@ -10,4 +12,11 @@ export interface Middleware {
 
 export interface ConditionalHandler {
   (handler: Handler): Middleware;
+}
+
+// deno-lint-ignore no-explicit-any
+export type Context = Record<string, any>;
+
+export interface ErrorHandler {
+  (req: ErroredRequest): MaybePromise<Response>;
 }
