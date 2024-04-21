@@ -6,3 +6,5 @@ export type Middleware = (
   req: Request,
   next: Handler,
 ) => MaybePromise<Response>;
+
+export type MiddlewareWrapper = (middleware: Middleware) => Middleware;

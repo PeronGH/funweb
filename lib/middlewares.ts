@@ -1,4 +1,4 @@
-import { Middleware } from "./types.ts";
+import type { Handler, Middleware, MiddlewareWrapper } from "./types.ts";
 import { globToRegExp } from "@std/path/posix/glob-to-regexp";
 
 export function method(method: string, middleware: Middleware): Middleware {
@@ -14,12 +14,12 @@ function createMethodMiddleware(m: string) {
   return (middleware: Middleware) => method(m, middleware);
 }
 
-export const get = createMethodMiddleware("GET");
-export const post = createMethodMiddleware("POST");
-export const put = createMethodMiddleware("PUT");
-export const del = createMethodMiddleware("DELETE");
-export const patch = createMethodMiddleware("PATCH");
-export const options = createMethodMiddleware("OPTIONS");
+export const get: MiddlewareWrapper = createMethodMiddleware("GET");
+export const post: MiddlewareWrapper = createMethodMiddleware("POST");
+export const put: MiddlewareWrapper = createMethodMiddleware("PUT");
+export const del: MiddlewareWrapper = createMethodMiddleware("DELETE");
+export const patch: MiddlewareWrapper = createMethodMiddleware("PATCH");
+export const options: MiddlewareWrapper = createMethodMiddleware("OPTIONS");
 
 export function path(
   glob: string,
@@ -35,4 +35,5 @@ export function path(
   };
 }
 
-export const notFound = () => new Response("Not Found", { status: 404 });
+export const notFound: Handler = () =>
+  new Response("Not Found", { status: 404 });
