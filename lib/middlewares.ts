@@ -1,40 +1,44 @@
 import { createHandler } from "./handler.ts";
-import type { Handler, Middleware, MiddlewareWrapper } from "./types.ts";
+import type { ConditionalHandler, Handler, Middleware } from "./types.ts";
 import { globToRegExp } from "@std/path/posix/glob-to-regexp";
 
-export function method(method: string, middleware: Middleware): Middleware {
+/**
+ * Creates a middleware that matches the request path against the given method (case insensitive).
+ * If there's a match, the provided handler is invoked; otherwise, it falls through.
+ */
+export function method(method: string, handler: Handler): Middleware {
   return (req, next) => {
     if (req.method.toUpperCase() === method.toUpperCase()) {
-      return middleware(req, next);
+      return handler(req);
     }
     return next(req);
   };
 }
 
 function createMethodMiddleware(m: string) {
-  return (middleware: Middleware) => method(m, middleware);
+  return (handler: Handler) => method(m, handler);
 }
 
-export const get: MiddlewareWrapper = createMethodMiddleware("GET");
-export const post: MiddlewareWrapper = createMethodMiddleware("POST");
-export const put: MiddlewareWrapper = createMethodMiddleware("PUT");
-export const del: MiddlewareWrapper = createMethodMiddleware("DELETE");
-export const patch: MiddlewareWrapper = createMethodMiddleware("PATCH");
-export const options: MiddlewareWrapper = createMethodMiddleware("OPTIONS");
+export const get: ConditionalHandler = createMethodMiddleware("GET");
+export const post: ConditionalHandler = createMethodMiddleware("POST");
+export const put: ConditionalHandler = createMethodMiddleware("PUT");
+export const del: ConditionalHandler = createMethodMiddleware("DELETE");
+export const patch: ConditionalHandler = createMethodMiddleware("PATCH");
+export const options: ConditionalHandler = createMethodMiddleware("OPTIONS");
 
 /**
  * Creates a middleware that matches the request path against the given glob pattern.
- * If there's a match, the provided middleware is invoked; otherwise, it falls through.
+ * If there's a match, the provided handler is invoked; otherwise, it falls through.
  */
 export function route(
   glob: string,
-  middleware: Middleware,
+  handler: Handler,
 ): Middleware {
   const patternRegex = globToRegExp(glob);
   return (req, next) => {
     const { pathname } = new URL(req.url);
     if (patternRegex.test(pathname)) {
-      return middleware(req, next);
+      return handler(req);
     }
     return next(req);
   };
