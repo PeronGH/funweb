@@ -3,19 +3,32 @@ import type { Handler, Middleware } from "./types.ts";
 import { match, when } from "./core.ts";
 import { notFound } from "./errors.ts";
 
+const globMap = new Map<string, RegExp>();
+
+function getGlobRegex(glob: string): RegExp {
+  let globRegex = globMap.get(glob);
+  if (!globRegex) {
+    globRegex = globToRegExp(glob);
+    globMap.set(glob, globRegex);
+  }
+  return globRegex;
+}
+
 /**
  * Creates a middleware that matches the request path against the given glob pattern.
  * If there's a match, the provided middleware is invoked; otherwise, it falls through.
+ *
+ * WARNING: dynamically generated glob patterns can have performance implications.
  */
 export function whenPath(
   glob: string,
   middleware: Middleware,
 ): Middleware {
-  const patternRegex = globToRegExp(glob);
+  const globRegex = getGlobRegex(glob);
   return when(
     (req) => {
       const { pathname } = new URL(req.url);
-      return patternRegex.test(pathname);
+      return globRegex.test(pathname);
     },
     middleware,
   );
@@ -24,6 +37,8 @@ export function whenPath(
 /**
  * Creates a middleware that matches the request path against the given glob pattern.
  * If there's a match, the provided handler is invoked; otherwise, it falls through.
+ *
+ * WARNING: dynamically generated glob patterns can have performance implications.
  */
 export function route(
   glob: string,
