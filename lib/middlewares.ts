@@ -26,7 +26,7 @@ export const options: MiddlewareWrapper = createMethodMiddleware("OPTIONS");
  * Creates a middleware that matches the request path against the given glob pattern.
  * If there's a match, the provided middleware is invoked; otherwise, it falls through.
  */
-export function path(
+export function route(
   glob: string,
   middleware: Middleware,
 ): Middleware {
@@ -41,28 +41,27 @@ export function path(
 }
 
 /**
- * Creates a middleware that routes requests matching the given glob pattern.
- * If there's a match, the provided middlewares are invoked in the FILO order.
+ * Creates a handler that invokes the provided middlewares in the FILO order.
  * If none of the middlewares handle the request, a "Method Not Allowed" response is sent.
- * If there's no match, the middleware falls through to the next one in the chain.
  */
-export function route(
-  glob: string,
+export function methods(
   ...middlewares: Middleware[]
-): Middleware {
-  const patternRegex = globToRegExp(glob);
-  const handler = createHandler(methodNotAllowed, ...middlewares);
-  return (req, next) => {
-    const { pathname } = new URL(req.url);
-    if (patternRegex.test(pathname)) {
-      return handler(req);
-    }
-    return next(req);
-  };
+): Handler {
+  return createHandler(methodNotAllowed, ...middlewares);
 }
 
-export const notFound: Handler = () =>
-  new Response("Not Found", { status: 404 });
+/**
+ * Creates a handler that invokes the provided middlewares in the FILO order.
+ * If none of the middlewares handle the request, a "Not Found" response is sent.
+ */
+export function routes(
+  ...middlewares: Middleware[]
+): Handler {
+  return createHandler(notFound, ...middlewares);
+}
 
 export const methodNotAllowed: Handler = () =>
   new Response("Method Not Allowed", { status: 405 });
+
+export const notFound: Handler = () =>
+  new Response("Not Found", { status: 404 });

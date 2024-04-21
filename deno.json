@@ -1,6 +1,6 @@
 {
   "name": "@pixel/funweb",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "exports": "./mod.ts",
   "imports": {
     "@std/path": "jsr:@std/path@^0.223.0"
