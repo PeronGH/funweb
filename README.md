@@ -5,7 +5,15 @@ Functional Web Backend Framework
 ## Example
 
 ```typescript
-import { get, post, route, routes, verbs } from "jsr:@pixel/funweb";
+import {
+  catchError,
+  get,
+  internalServerError,
+  post,
+  route,
+  routes,
+  verbs,
+} from "jsr:@pixel/funweb";
 
 const handler = routes(
   route(
@@ -19,6 +27,13 @@ const handler = routes(
     "/?(*.{html,htm})",
     (req) => new Response(new URL(req.url).pathname),
   ),
+  route(
+    "/**/error",
+    () => {
+      throw new Error("An error occurred");
+    },
+  ),
+  catchError(internalServerError),
 );
 
 Deno.serve(handler);
