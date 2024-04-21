@@ -15,7 +15,7 @@ const handler = routes(
       post((req) => new Response(req.body)),
     ),
   ),
-  route("/hi", get(() => new Response("Hi!"))),
+  route("/hi", methods(get(() => new Response("Hi!")))),
 );
 
 Deno.serve(handler);
