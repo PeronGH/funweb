@@ -10,10 +10,8 @@ export function match(
   ...middlewares: Middleware[]
 ): Handler {
   return (req) => {
-    while (middlewares.length) {
-      const nextMiddleware = middlewares.shift()!;
-      const nextHandler = handler;
-      handler = (req) => nextMiddleware(req, nextHandler);
+    for (const middleware of middlewares) {
+      handler = (req) => middleware(req, handler);
     }
     return handler(req);
   };

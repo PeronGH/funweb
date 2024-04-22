@@ -1,4 +1,4 @@
-import { methodNotAllowed } from "./errors.ts";
+import { methodNotAllowed } from "./responses.ts";
 import { match, when } from "./core.ts";
 import type { ConditionalHandler, Handler, Middleware } from "./types.ts";
 

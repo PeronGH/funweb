@@ -17,3 +17,7 @@ export type Context<T extends Record<string, any> = object> =
   // deno-lint-ignore no-explicit-any
   & Record<string, any>
   & T;
+
+export interface Processor<T> {
+  (value: T): MaybePromise<T>;
+}

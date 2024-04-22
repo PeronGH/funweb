@@ -1,7 +1,7 @@
 import { globToRegExp } from "@std/path/posix/glob-to-regexp";
 import type { Handler, Middleware } from "./types.ts";
 import { match, when } from "./core.ts";
-import { notFound } from "./errors.ts";
+import { notFound } from "./responses.ts";
 
 const globMap = new Map<string, RegExp>();
 
