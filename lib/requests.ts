@@ -1,8 +1,8 @@
 import type { Middleware, Processor } from "./types.ts";
 
-export abstract class WrappedRequest extends Request {
-  constructor(readonly raw: Request) {
-    super(raw);
+export class WrappedRequest extends Request {
+  constructor(readonly raw: Request, init: RequestInit = {}) {
+    super(raw, init);
   }
 
   static unwrap(req: Request): Request {
@@ -21,4 +21,8 @@ export class ErroredRequest extends WrappedRequest {
 
 export function preprocess(processor: Processor<Request>): Middleware {
   return async (req, next) => next(await processor(req));
+}
+
+export function cloneReq(req: Request, init: RequestInit = {}): Request {
+  return new WrappedRequest(req, init);
 }
