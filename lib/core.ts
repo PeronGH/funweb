@@ -5,13 +5,12 @@ import type { Handler, MaybePromise, Middleware } from "./types.ts";
  * The middlewares are invoked in the FILO order.
  * The handler serves as the default handler if none of the middlewares handle the request.
  */
-export function match(
-  handler: Handler,
-  ...middlewares: Middleware[]
-): Handler {
+export function match(handler: Handler, ...middlewares: Middleware[]): Handler {
   return (req) => {
-    for (const middleware of middlewares) {
-      handler = (req) => middleware(req, handler);
+    while (middlewares.length) {
+      const nextMiddleware = middlewares.shift()!;
+      const nextHandler = handler;
+      handler = (req) => nextMiddleware(req, nextHandler);
     }
     return handler(req);
   };
