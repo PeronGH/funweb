@@ -8,6 +8,10 @@ export interface Middleware {
   (req: Request, next: Handler): MaybePromise<Response>;
 }
 
+export interface Provider {
+  (): MaybePromise<Response>;
+}
+
 export interface ConditionalHandler {
   (handler: Handler): Middleware;
 }

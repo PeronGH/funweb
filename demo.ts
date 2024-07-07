@@ -26,10 +26,7 @@ const handler = routes(
       throw new Error("An error occurred");
     },
   ),
-  catchError((req) => {
-    console.error(req.error);
-    return internalServerError(req);
-  }),
+  catchError(internalServerError),
 );
 
 Deno.serve(handler);
