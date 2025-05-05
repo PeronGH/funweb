@@ -13,7 +13,7 @@ import {
   route,
   routes,
   verbs,
-} from "jsr:@pixel/funweb";
+} from "./mod.ts";
 
 const handler = routes(
   route(
@@ -33,10 +33,7 @@ const handler = routes(
       throw new Error("An error occurred");
     },
   ),
-  catchError((req) => {
-    console.error(req.error);
-    return internalServerError(req);
-  }),
+  catchError(internalServerError),
 );
 
 Deno.serve(handler);
