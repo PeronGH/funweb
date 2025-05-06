@@ -28,12 +28,14 @@ function createVerbMiddleware(m: string) {
   return (handler: Handler) => verb(m, handler);
 }
 
+export const head: ConditionalHandler = createVerbMiddleware("HEAD");
 export const get: ConditionalHandler = createVerbMiddleware("GET");
 export const post: ConditionalHandler = createVerbMiddleware("POST");
 export const put: ConditionalHandler = createVerbMiddleware("PUT");
 export const del: ConditionalHandler = createVerbMiddleware("DELETE");
 export const patch: ConditionalHandler = createVerbMiddleware("PATCH");
 export const options: ConditionalHandler = createVerbMiddleware("OPTIONS");
+export const trace: ConditionalHandler = createVerbMiddleware("TRACE");
 
 /**
  * Creates a handler that invokes the provided middlewares in the FILO order.
