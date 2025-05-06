@@ -2,6 +2,7 @@
   "name": "@pixel/funweb",
   "version": "0.9.2",
   "exports": "./mod.ts",
+  "license": "MIT",
   "imports": {
     "@std/path": "jsr:@std/path@^0.223.0"
   }
